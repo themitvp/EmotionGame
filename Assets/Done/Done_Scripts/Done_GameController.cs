@@ -32,7 +32,7 @@ public class Done_GameController : MonoBehaviour
 		restartText.text = "";
 		gameOverText.text = "";
 		score = 0;
-		fileOutput = new FileOutput ("output-" + System.DateTime.Now.ToShortTimeString());
+		fileOutput = new FileOutput ("output-" + System.DateTime.Now.Ticks);
 		UpdateScore ();
 		StartCoroutine (SpawnWaves ());
 	}
