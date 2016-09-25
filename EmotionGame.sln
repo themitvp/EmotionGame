@@ -1,0 +1,29 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2008
+
+Project("{71E4E4E3-E68C-94A4-536B-2431EC88FF96}") = "EmotionGame", "Assembly-CSharp.csproj", "{CAF9AD64-27E5-EFD0-8B9F-586ED72EBB7A}"
+EndProject
+Project("{71E4E4E3-E68C-94A4-536B-2431EC88FF96}") = "EmotionGame", "Assembly-CSharp-Editor.csproj", "{776A8A51-76DE-4BEA-96DB-FC3813831F82}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CAF9AD64-27E5-EFD0-8B9F-586ED72EBB7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAF9AD64-27E5-EFD0-8B9F-586ED72EBB7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAF9AD64-27E5-EFD0-8B9F-586ED72EBB7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAF9AD64-27E5-EFD0-8B9F-586ED72EBB7A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{776A8A51-76DE-4BEA-96DB-FC3813831F82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{776A8A51-76DE-4BEA-96DB-FC3813831F82}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{776A8A51-76DE-4BEA-96DB-FC3813831F82}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{776A8A51-76DE-4BEA-96DB-FC3813831F82}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
+	EndGlobalSection
+EndGlobal
