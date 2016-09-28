@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Affdex/Examples/Video_Detector.unity
+- path: Assets/Done/Done_Scenes/Done_Main.unity
   isLoaded: 1
   isActive: 1

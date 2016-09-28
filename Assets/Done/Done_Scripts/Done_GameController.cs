@@ -18,7 +18,7 @@ public class Done_GameController : MonoBehaviour
 	private bool restart;
 	private int score;
 
-	public FileOutput fileOutput;
+
 
 	void Awake ()
 	{
@@ -32,7 +32,7 @@ public class Done_GameController : MonoBehaviour
 		restartText.text = "";
 		gameOverText.text = "";
 		score = 0;
-		fileOutput = new FileOutput ("output-" + System.DateTime.Now.Ticks);
+
 		UpdateScore ();
 		StartCoroutine (SpawnWaves ());
 	}
@@ -87,6 +87,6 @@ public class Done_GameController : MonoBehaviour
 	{
 		gameOverText.text = "Game Over!";
 		gameOver = true;
-		fileOutput.Close ();
+
 	}
 }
