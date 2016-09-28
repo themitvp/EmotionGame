@@ -36,12 +36,12 @@ public class Listener : ImageResultsListener
 
     public override void onFaceFound(float timestamp, int faceId)
     {
-        Debug.Log("Found the face");
+		Debug.Log("Found the face at: " + timestamp);
     }
 
     public override void onFaceLost(float timestamp, int faceId)
     {
-        Debug.Log("lost the face");
+		Debug.Log("lost the face at: " + timestamp);
     }
     
     public override void onImageResults(Dictionary<int, Face> faces)
@@ -51,8 +51,12 @@ public class Listener : ImageResultsListener
         if (faces.Count > 0)
         {
             DebugFeatureViewer dfv = GameObject.FindObjectOfType<DebugFeatureViewer>();
+			var game = GameObject.FindObjectOfType<Done_GameController>();
 
+			var player = GameObject.FindGameObjectWithTag("Player");
+			var isPlayerDead = Convert.ToInt32 (game.IsPlayerDead ())*100;
             //textArea.text = faces[0].ToString();
+			textArea.text = Convert.ToInt32(game.IsPlayerDead()).ToString();
             textArea.CrossFadeColor(Color.white, 0.2f, true, false);
 
 			foreach (KeyValuePair<int, Face> pair in faces) {
@@ -92,7 +96,10 @@ public class Listener : ImageResultsListener
 				//Retrieve the Interocular distance, the distance between two outer eye corners.
 				currentInterocularDistance = face.Measurements.interOcularDistance;
 
-				fileOutput.LogFace (face);
+				var enemies = GameObject.FindGameObjectsWithTag ("Enemy");
+
+				fileOutput.LogFace (face, enemies.Length, isPlayerDead);
+
 				//Retrieve the coordinates of the facial landmarks (face feature points)
 				featurePointsList = face.FeaturePoints;
 			}

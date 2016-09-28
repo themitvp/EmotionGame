@@ -89,4 +89,9 @@ public class Done_GameController : MonoBehaviour
 		gameOver = true;
 
 	}
+
+	public bool IsPlayerDead ()
+	{
+		return gameOver;
+	}
 }

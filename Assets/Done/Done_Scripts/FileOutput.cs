@@ -31,7 +31,7 @@ public class FileOutput
 		writer.WriteLine(string.Format("%s\t%s", stopwatch.Elapsed.Seconds, msg));
 	}
 
-	public void LogFace(Face face)
+	public void LogFace(Face face, int enemies, int isPlayerDead)
 	{
 		if (!started) {
 			WriteHeader (face);
@@ -49,6 +49,9 @@ public class FileOutput
 		}
 		//UnityEngine.Debug.Log (sb.ToString());
 
+		sb.Append(enemies).Append ("\t");
+		sb.Append(isPlayerDead).Append ("\t");
+
 		writer.WriteLine(sb.ToString());
 	}
 
@@ -63,7 +66,8 @@ public class FileOutput
 		foreach (var expression in face.Expressions) {
 			sb.Append (expression.Key).Append ("\t");
 		}
-
+		sb.Append ("enemies\t");
+		sb.Append ("isPlayerDead\t");
 		writer.WriteLine (sb.ToString());
 	}
 }
