@@ -5,7 +5,6 @@ public class Done_BGScroller : MonoBehaviour
 {
 	public float scrollSpeed;
 	public float tileSizeZ;
-
 	private Vector3 startPosition;
 
 	void Start ()

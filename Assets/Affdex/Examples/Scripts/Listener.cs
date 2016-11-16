@@ -6,30 +6,17 @@ using System;
 
 public class Listener : ImageResultsListener
 { 
-
-    public Text textArea;
-
 	public float currentInterocularDistance;
 	public float currentContempt;
 	public float currentValence;
 	public float currentAnger;
-	public float currentFear;
 	public float currentEngagement;
 	public float currentDisgust;
 	public float currentJoy;
-	public float currentSadness;
 	public float currentSurprise;
 
 	public float currentSmile;
 	public float currentAttention;
-	public float currentBrowFurrow;
-	public float currentBrowRaise;
-	public float currentChinRaise;
-	public float currentEyeClosure;
-	public float currentInnerBrowRaise;
-	public float currentLipCornerDepressor;
-	//public float currentBrowFurrow;
-	//public float currentBrowFurrow;
 	public FileOutput fileOutput;
 
 	public FeaturePoint[] featurePointsList;
@@ -54,10 +41,9 @@ public class Listener : ImageResultsListener
 			var game = GameObject.FindObjectOfType<Done_GameController>();
 
 			var player = GameObject.FindGameObjectWithTag("Player");
-			var isPlayerDead = Convert.ToInt32 (game.IsPlayerDead ())*100;
-            //textArea.text = faces[0].ToString();
-			textArea.text = Convert.ToInt32(game.IsPlayerDead()).ToString();
-            textArea.CrossFadeColor(Color.white, 0.2f, true, false);
+
+			var isPlayerDead = game.IsPlayerDead() ? 1 : 0;
+			var isEmotionModeActivated = game.IsEmotionModeActivated() ? 1 : 0;
 
 			foreach (KeyValuePair<int, Face> pair in faces) {
 				int FaceId = pair.Key;  // The Face Unique Id.
@@ -67,47 +53,25 @@ public class Listener : ImageResultsListener
 				face.Emotions.TryGetValue (Emotions.Contempt, out currentContempt);
 				face.Emotions.TryGetValue (Emotions.Valence, out currentValence);
 				face.Emotions.TryGetValue (Emotions.Anger, out currentAnger);
-				face.Emotions.TryGetValue (Emotions.Fear, out currentFear);
 				face.Emotions.TryGetValue (Emotions.Engagement, out currentEngagement);
 				face.Emotions.TryGetValue (Emotions.Disgust, out currentDisgust);
 				face.Emotions.TryGetValue (Emotions.Joy, out currentJoy);
-				face.Emotions.TryGetValue (Emotions.Sadness, out currentSadness);
 				face.Emotions.TryGetValue (Emotions.Surprise, out currentSurprise);
 
 				//Retrieve the Smile Score
 				face.Expressions.TryGetValue (Expressions.Smile, out currentSmile);
 				face.Expressions.TryGetValue (Expressions.Attention, out currentAttention);
-				face.Expressions.TryGetValue (Expressions.BrowFurrow, out currentBrowFurrow);
-				face.Expressions.TryGetValue (Expressions.BrowRaise, out currentBrowRaise);
-				face.Expressions.TryGetValue (Expressions.ChinRaise, out currentChinRaise);
-				face.Expressions.TryGetValue (Expressions.EyeClosure, out currentEyeClosure);
-				face.Expressions.TryGetValue (Expressions.InnerBrowRaise, out currentInnerBrowRaise);
-				face.Expressions.TryGetValue (Expressions.LipCornerDepressor, out currentLipCornerDepressor);
-				/*face.Expressions.TryGetValue (Expressions.LipPress, out currentAttention);
-				face.Expressions.TryGetValue (Expressions.LipPucker, out currentAttention);
-				face.Expressions.TryGetValue (Expressions.LipCornerDepressor, out currentAttention);
-				face.Expressions.TryGetValue (Expressions.LipCornerDepressor, out currentAttention);
-				face.Expressions.TryGetValue (Expressions.LipCornerDepressor, out currentAttention);
-				face.Expressions.TryGetValue (Expressions.LipCornerDepressor, out currentAttention);*/
-
-
-
 
 				//Retrieve the Interocular distance, the distance between two outer eye corners.
 				currentInterocularDistance = face.Measurements.interOcularDistance;
 
 				var enemies = GameObject.FindGameObjectsWithTag ("Enemy");
 
-				fileOutput.LogFace (face, enemies.Length, isPlayerDead);
+				fileOutput.LogFace (face, enemies.Length, isPlayerDead, game.Level, game.hazardCount, game.spawnWait, game.waveWait, isEmotionModeActivated, game.score);
 
 				//Retrieve the coordinates of the facial landmarks (face feature points)
 				featurePointsList = face.FeaturePoints;
 			}
-        }
-        else
-        {
-            textArea.CrossFadeColor(new Color(1, 0.7f, 0.7f), 0.2f, true, false);
-			//fileOutput.Close ();
         }
     }
 

@@ -31,7 +31,7 @@ public class FileOutput
 		writer.WriteLine(string.Format("%s\t%s", stopwatch.Elapsed.Seconds, msg));
 	}
 
-	public void LogFace(Face face, int enemies, int isPlayerDead)
+	public void LogFace(Face face, int enemies, int isPlayerDead, int level, int hazardCount, float spawnWait, float waveWait, int emotionModeActivated, int score)
 	{
 		if (!started) {
 			WriteHeader (face);
@@ -47,10 +47,15 @@ public class FileOutput
 		foreach (var expression in face.Expressions) {
 			sb.Append (expression.Value.ToString("F3")).Append ("\t");
 		}
-		//UnityEngine.Debug.Log (sb.ToString());
 
 		sb.Append(enemies).Append ("\t");
 		sb.Append(isPlayerDead).Append ("\t");
+		sb.Append(level).Append ("\t");
+		sb.Append(hazardCount).Append ("\t");
+		sb.Append(spawnWait.ToString("F3")).Append ("\t");
+		sb.Append(waveWait.ToString("F3")).Append ("\t");
+		sb.Append(emotionModeActivated).Append ("\t");
+		sb.Append(score).Append ("\t");
 
 		writer.WriteLine(sb.ToString());
 	}
@@ -68,6 +73,12 @@ public class FileOutput
 		}
 		sb.Append ("enemies\t");
 		sb.Append ("isPlayerDead\t");
+		sb.Append ("level\t");
+		sb.Append ("hazardCount\t");
+		sb.Append ("spawnWait\t");
+		sb.Append ("waveWait\t");
+		sb.Append ("emotionModeActivated\t");
+		sb.Append ("score\t");
 		writer.WriteLine (sb.ToString());
 	}
 }
