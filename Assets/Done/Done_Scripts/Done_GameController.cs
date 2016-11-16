@@ -41,6 +41,8 @@ public class Done_GameController : MonoBehaviour
 	public static List<float> LevelValence = new List<float> ();
 	int bgScrollInterval = 5;
 	public static bool hasJustDied;
+	public static bool hasStartedGame;
+	public static bool firstGame = true;
 
 	Transform player;
 	Listener playerEmotions;
@@ -59,7 +61,6 @@ public class Done_GameController : MonoBehaviour
 		gameOver = false;
 		restart = false;
 		restartText.text = "";
-		gameOverText.text = "";
 
 		Level = Mathf.Max(PlayerPrefs.GetInt ("level", Level), baseLevel);
 		previousLevel = Level - 1;
@@ -72,10 +73,15 @@ public class Done_GameController : MonoBehaviour
 		highscore = PlayerPrefs.GetInt ("highscore", highscore);
 		levelText.text = Level.ToString ();
 
-
 		UpdateScore ();
 		AdjustParameters ();
-		StartCoroutine (SpawnWaves ());
+
+		if (firstGame) {
+			var mode = emotionModeActivated ? "2" : "1";
+			gameOverText.text = "Welcome - Press Enter to begin (Mode " + mode + ")";
+		} else {
+			StartCoroutine (SpawnWaves ());
+		}
 
 		player = GameObject.FindGameObjectWithTag("MainCamera").transform;
 		playerEmotions = player.GetComponent<Listener>();
@@ -87,8 +93,8 @@ public class Done_GameController : MonoBehaviour
 
 		stopwatch = new Stopwatch ();
 		stopwatch.Start ();
+
 		stopwatchWave = new Stopwatch ();
-		stopwatchWave.Start ();
 	}
 	
 	void Update ()
@@ -96,24 +102,27 @@ public class Done_GameController : MonoBehaviour
 		if (restart) {
 			if (Input.GetKeyDown (KeyCode.R)) {
 				SceneManager.LoadScene (Application.loadedLevel);
+				if (wave > 1) {
+					wave--;
+				}
 			}
 		}
 
-		if (Input.GetKeyDown (KeyCode.H)) {
+		// Change Mode and Reset Game
+		if (Input.GetKeyDown (KeyCode.O)) {
 			emotionModeActivated = !emotionModeActivated;
-			Level = baseLevel;
-			bgScroller.scrollSpeed = baseScrollSpeed;
-			SceneManager.LoadScene (Application.loadedLevel);
-			hasJustDied = false;
-			wave = 1;
+
+			ResetGame ();
 		}
 
-		if (Input.GetKeyDown (KeyCode.T)) {
-			Level = baseLevel;
-			bgScroller.scrollSpeed = baseScrollSpeed;
-			SceneManager.LoadScene (Application.loadedLevel);
-			hasJustDied = false;
-			wave = 1;
+		// Reset Game
+		if (Input.GetKeyDown (KeyCode.I)) {
+			ResetGame ();
+		}
+
+		if (Input.GetKeyDown (KeyCode.Return)) {
+			hasStartedGame = true;
+			StartCoroutine (SpawnWaves ());
 		}
 
 		levelText.text = Level.ToString ();
@@ -139,6 +148,18 @@ public class Done_GameController : MonoBehaviour
 		}
 	}
 
+	void ResetGame () {
+		Level = baseLevel;
+		wave = baseLevel;
+		bgScroller.scrollSpeed = baseScrollSpeed;
+		enemySpeed = baseEnemySpeed;
+		hasJustDied = false;
+		hasStartedGame = false;
+		firstGame = true;
+
+		SceneManager.LoadScene (Application.loadedLevel);
+	}
+
 	void AdjustParameters () {
 		var factor = Level - 1;
 		hazardCount = baseHazardCount + factor * 5;
@@ -152,18 +173,23 @@ public class Done_GameController : MonoBehaviour
 		yield return new WaitForSeconds (startWait);
 		if (Level == 1) {
 			LevelValence.Clear ();
+			firstGame = true;
+		} else {
+			firstGame = false;
 		}
 		while (true)
 		{
 			UnityEngine.Debug.Log ("level count" + LevelValence.Count);
 
-			if (!emotionModeActivated) {
+			// If in "Normal Mode", make these changes
+			if (!emotionModeActivated && !firstGame) {
 				LevelValence.Clear ();
 				var fakeValence = hasJustDied ? -30f : 20f;
 				LevelValence.Add (fakeValence);
-				if (Level == 1) {
-					LevelValence.Clear ();
-				}
+			}
+
+			if (firstGame) {
+				firstGame = false;
 			}
 
 			if (LevelValence.Count > 0) {
@@ -189,7 +215,8 @@ public class Done_GameController : MonoBehaviour
 
 			LevelValence.Clear ();
 			AdjustParameters ();
-			gameOverText.text = "Wave " + wave + "!";
+			gameOverText.text = "Wave " + wave;
+			stopwatchWave.Reset ();
 			stopwatchWave.Start ();
 			wave++;
 
@@ -248,6 +275,10 @@ public class Done_GameController : MonoBehaviour
 	public bool IsEmotionModeActivated ()
 	{
 		return emotionModeActivated;
+	}
+
+	public bool HasStartedGame() {
+		return hasStartedGame;
 	}
 
 	void OnDestroy() {

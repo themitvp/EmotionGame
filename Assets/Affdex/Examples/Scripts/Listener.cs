@@ -35,14 +35,12 @@ public class Listener : ImageResultsListener
     {
         Debug.Log("Got results.  Face count=" + faces.Count);
 
-        if (faces.Count > 0)
+		var game = GameObject.FindObjectOfType<Done_GameController>();
+		var player = GameObject.FindGameObjectWithTag("Player");
+
+		if (faces.Count > 0 && game.HasStartedGame())
         {
-            DebugFeatureViewer dfv = GameObject.FindObjectOfType<DebugFeatureViewer>();
-			var game = GameObject.FindObjectOfType<Done_GameController>();
-
-			var player = GameObject.FindGameObjectWithTag("Player");
-
-			var isPlayerDead = game.IsPlayerDead() ? 1 : 0;
+            var isPlayerDead = game.IsPlayerDead() ? 1 : 0;
 			var isEmotionModeActivated = game.IsEmotionModeActivated() ? 1 : 0;
 
 			foreach (KeyValuePair<int, Face> pair in faces) {
