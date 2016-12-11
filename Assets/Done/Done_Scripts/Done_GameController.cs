@@ -252,10 +252,6 @@ public class Done_GameController : MonoBehaviour
 	{
 		highscoreText.text = "Highscore: " + highscore;
 		scoreText.text = "Score: " + score;
-
-		if (emotionModeActivated == false) {
-			highscoreText.fontStyle = FontStyle.Bold;
-		}
 	}
 	
 	public void GameOver ()
